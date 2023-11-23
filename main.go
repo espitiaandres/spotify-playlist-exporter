@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -62,16 +63,27 @@ func main() {
 
 func fetchPlaylist(accessToken *oauth2.Token, playlistId string) {
 	log.Println("playlist id:", playlistId)
+
 	client := spotify.Authenticator{}.NewClient(accessToken)
 
-	playlistID := spotify.ID(playlistId)
-	playlist, err := client.GetPlaylist(playlistID)
+	spotifyPlaylistId := spotify.ID(playlistId)
+
+	playlist, err := client.GetPlaylist(spotifyPlaylistId)
 
 	if err != nil {
 		log.Fatalf("error retrieve playlist data: %v", err)
 	}
 
-	log.Println("playlist id:", playlist.ID)
+	createCsv(playlist)
+}
+
+func createCsv(playlist *spotify.FullPlaylist) {
+	playlistName := playlist.Name
+
+	playlistNameFormatted := strings.ReplaceAll(playlistName, " ", "_")
+
+	fileName := fmt.Sprintf("./exports/%s.csv", playlistNameFormatted)
+
 	log.Println("playlist name:", playlist.Name)
-	log.Println("playlist description:", playlist.Description)
+	log.Println("filename:", fileName)
 }
