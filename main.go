@@ -18,6 +18,12 @@ import (
 	"spotify-playlist-exporter/helpers/timer"
 )
 
+/**
+TODO:
+- complete readme.md
+- move functions out
+*/
+
 func main() {
 	defer timer.FuncTimer("main")()
 
