@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"encoding/csv"
 	"fmt"
 	"log"
 	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/zmb3/spotify"
@@ -35,8 +37,7 @@ func main() {
 	accessToken, err := authConfig.Token(contextBackground)
 
 	playlistUrls := []string{
-		"https://open.spotify.com/playlist/37i9dQZF1DWV7EzJMK2FUI?si=799ca1af48274f9d",
-		"https://open.spotify.com/playlist/37i9dQZF1DX0jgyAiPl8Af?si=edf2c8829a4c4071",
+		"https://open.spotify.com/playlist/37i9dQZF1DWV7EzJMK2FUI?si=7e466243d8e84189",
 	}
 
 	var wg sync.WaitGroup
@@ -48,7 +49,7 @@ func main() {
 
 		go func() {
 			defer wg.Done()
-			fetchPlaylist(accessToken, playlistId)
+			fetchSpotifyClient(accessToken, playlistId)
 		}()
 	}
 
@@ -61,12 +62,14 @@ func main() {
 	log.Printf("Completed converting %v playlists to .csv", len(playlistUrls))
 }
 
-func fetchPlaylist(accessToken *oauth2.Token, playlistId string) {
+func fetchSpotifyClient(accessToken *oauth2.Token, playlistId string) {
 	log.Println("playlist id:", playlistId)
 
-	client := spotify.Authenticator{}.NewClient(accessToken)
+	// client := spotify.Authenticator{}.NewClient(accessToken)
 
 	spotifyPlaylistId := spotify.ID(playlistId)
+
+	client := spotify.Authenticator{}.NewClient(accessToken)
 
 	playlist, err := client.GetPlaylist(spotifyPlaylistId)
 
@@ -74,16 +77,59 @@ func fetchPlaylist(accessToken *oauth2.Token, playlistId string) {
 		log.Fatalf("error retrieve playlist data: %v", err)
 	}
 
-	createCsv(playlist)
+	createCsv(accessToken, playlist)
 }
 
-func createCsv(playlist *spotify.FullPlaylist) {
+func createCsv(accessToken *oauth2.Token, playlist *spotify.FullPlaylist) {
 	playlistName := playlist.Name
-
 	playlistNameFormatted := strings.ReplaceAll(playlistName, " ", "_")
 
-	fileName := fmt.Sprintf("./exports/%s.csv", playlistNameFormatted)
+	currentTime := time.Now()
+	currentTimeFormatted := strings.ReplaceAll(currentTime.Format("01-02-2006 15:04:05"), " ", "_")
 
-	log.Println("playlist name:", playlist.Name)
-	log.Println("filename:", fileName)
+	fileName := fmt.Sprintf("./exports/%s_%s.csv", playlistNameFormatted, currentTimeFormatted)
+
+	tracks := playlist.Tracks.Tracks
+	var allTracks [][]string
+	titleRow := []string{
+		"Track",
+		"Artists",
+		"Album",
+		"Duration",
+	}
+
+	allTracks = append(allTracks, titleRow)
+
+	for _, element := range tracks {
+		var artists []string
+
+		for _, artist := range element.Track.Artists {
+			artists = append(artists, artist.Name)
+		}
+
+		trackName := element.Track.Name
+		artistsString := strings.Join(artists, ", ")
+		albumName := element.Track.Album.Name
+		trackDuration := element.Track.TimeDuration().String()
+
+		row := []string{
+			trackName,
+			artistsString,
+			albumName,
+			trackDuration,
+		}
+
+		allTracks = append(allTracks, row)
+	}
+
+	file, err := os.Create(fileName)
+
+	if err != nil {
+		log.Fatalln("failed to open file", err)
+	}
+
+	defer file.Close()
+
+	wr := csv.NewWriter(file)
+	wr.WriteAll(allTracks)
 }
