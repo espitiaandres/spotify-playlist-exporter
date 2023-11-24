@@ -25,6 +25,12 @@ Below are the inputs/outputs to this script:
 
 > Example: If you wanted to choose `Spotify's Top Songs - Global` playlist, this would be the link you would enter in the playlistUrls variable: https://open.spotify.com/playlist/37i9dQZEVXbNG2KDcFcKOF?si=be29ccfd84a347b8
 
+- `.env` file: on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard), create a new app. Give it whatever name you'd like, and note the `client id` and `client secret` given to you
+  by the dashboard - these will be needed to run the script. Create an `.env` file at the root of this repository. In this file, add these 2 environment variables:
+
+> CLIENT_ID="<YOUR_CLIENT_ID_HERE>"
+> CLIENT_SECRET="<YOUR_CLIENT_SECRET_HERE>"
+
 <a name="outputs"/>
 
 ## Outputs:

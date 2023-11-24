@@ -20,6 +20,7 @@ import (
 func main() {
 	defer timer.FuncTimer("main")()
 
+	// Load environment variables in .env file
 	err := godotenv.Load()
 
 	if err != nil {
@@ -49,6 +50,7 @@ func main() {
 
 	for _, element := range playlistUrls {
 		wg.Add(1)
+
 		playlistQueryString := strings.SplitAfter(element, "https://open.spotify.com/playlist/")[1]
 		playlistIdRaw := strings.SplitAfter(playlistQueryString, "?si=")[0]
 		playlistId := strings.ReplaceAll(playlistIdRaw, "?si=", "")

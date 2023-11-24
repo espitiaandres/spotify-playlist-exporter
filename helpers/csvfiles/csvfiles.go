@@ -14,11 +14,11 @@ import (
 func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spotify.FullPlaylist, currentTimeFormatted string) {
 	tracks, err := client.GetPlaylistTracks(playlist.ID)
 
-	playlistTracks := []spotify.PlaylistTrack{}
-
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	playlistTracks := []spotify.PlaylistTrack{}
 
 	log.Printf("Playlist has %d total tracks", tracks.Total)
 
