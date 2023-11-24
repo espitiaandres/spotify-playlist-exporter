@@ -1,6 +1,6 @@
 # Spotify Playlist Exporter
 
-``spotify-playlist-exporter` is a Go script that uses `goroutines` and `waitgroups` that converts a Spotify playlist into a .csv file.
+`spotify-playlist-exporter` is a Go script that uses `goroutines` and `waitgroups` that converts a Spotify playlist into a .csv file.
 
 ## Table of contents:
 
