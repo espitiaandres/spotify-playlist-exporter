@@ -43,7 +43,7 @@ Below are the inputs/outputs to this script:
 
 > Example: These are the songs on `Jazz in the Background` playlist in the exported .csv file
 
-![Screenshot](./assets/example_csv_file.png)
+![Screenshot](./assets/example_csv_file_raw.png)
 
 This is the same file but in a more user friendly presentation:
 
