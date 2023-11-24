@@ -41,9 +41,10 @@ func main() {
 	accessToken, err := authConfig.Token(contextBackground)
 
 	playlistUrls := []string{
-		"https://open.spotify.com/playlist/37i9dQZF1DWV7EzJMK2FUI?si=7e466243d8e84189",
-		"https://open.spotify.com/playlist/4uClt6zoLaRF0vHPEwWChR?si=7899b77a5f594b3f",
-		"https://open.spotify.com/playlist/6A38ofY5uoJpFLCwE2T8OC?si=7acb4e42de0b409a",
+		// EXAMPLE:
+		"https://open.spotify.com/playlist/37i9dQZEVXbNG2KDcFcKOF?si=be29ccfd84a347b8",
+		"https://open.spotify.com/playlist/37i9dQZF1DWV7EzJMK2FUI?si=e81158c8b6744e58",
+		"https://open.spotify.com/playlist/37i9dQZF1DX4AyFl3yqHeK?si=b6d8550fba8642c5",
 	}
 
 	currentTime := time.Now()
