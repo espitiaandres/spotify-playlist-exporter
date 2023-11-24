@@ -19,7 +19,7 @@ import (
 
 /**
 TODO:
-- complete readme.md
+- complete readme.md (documentation, bugs/requests, license info like penguin)
 */
 
 func main() {
