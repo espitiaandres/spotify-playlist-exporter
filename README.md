@@ -23,7 +23,7 @@ Below are the inputs/outputs to this script:
 
 - `playlistUrls`: A slice of strings. These strings are Spotify playlist urls.
 
-> Example: If you wanted to choose `Spotify's Top Songs - Global` playlist, this would be the link you would enter in the playlistUrls variable: https://open.spotify.com/playlist/37i9dQZEVXbNG2KDcFcKOF?si=be29ccfd84a347b8
+> Example: If you wanted to choose `Jazz in the Background` playlist, this would be the link you would enter in the playlistUrls variable: https://open.spotify.com/playlist/37i9dQZF1DWV7EzJMK2FUI?si=2dc14fb0f2c64435
 
 - `.env` file: on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard), create a new app. Give it whatever name you'd like, and note the `client id` and `client secret` given to you
   by the dashboard - these will be needed to run the script. Create an `.env` file at the root of this repository. In this file, add these 2 environment variables:
@@ -41,7 +41,7 @@ Below are the inputs/outputs to this script:
   - Album Name
   - Duration
 
-> Example: These are the songs on `Spotify's Top Songs - Global` playlist in the exported .csv file
+> Example: These are the songs on `Jazz in the Background` playlist in the exported .csv file
 
 ![Screenshot](./assets/example_csv_file.png)
 
