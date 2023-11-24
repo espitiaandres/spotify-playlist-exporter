@@ -15,13 +15,15 @@
 
 # Usage
 
-Below are the inputs/outputs to this script
+Below are the inputs/outputs to this script:
 
 <a name="inputs"/>
 
 ## Inputs:
 
 - `playlistUrls`: A slice of strings. These strings are Spotify playlist urls.
+
+> Example: https://open.spotify.com/playlist/37i9dQZEVXbNG2KDcFcKOF?si=be29ccfd84a347b8
 
 <a name="outputs"/>
 
@@ -32,6 +34,17 @@ Below are the inputs/outputs to this script
   - Artists
   - Album Name
   - Duration
+
+> Example:
+
+<h1 align="center">
+<img
+    src="/assets/example_csv_file.jpg"
+    alt="Example CSV file produced"
+    title="Example CSV file produced"
+    width="200"
+/>
+</h1>
 
 <a name="documentation"/>
 
