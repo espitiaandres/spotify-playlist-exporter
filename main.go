@@ -17,11 +17,6 @@ import (
 	"spotify-playlist-exporter/helpers/timer"
 )
 
-/**
-TODO:
-- complete readme.md (documentation, bugs/requests, license info like penguin)
-*/
-
 func main() {
 	defer timer.FuncTimer("main")()
 

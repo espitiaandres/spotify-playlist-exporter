@@ -43,7 +43,7 @@ Below are the inputs/outputs to this script:
 
 # Documentation
 
-Documentation of `penguin-py` can be found here: https://github.com/espitiaandres/spotify-playlist-exporter/blob/main/README.md
+Documentation of `spotify-playlist-exporter` can be found here: https://github.com/espitiaandres/spotify-playlist-exporter/blob/main/README.md
 
 <a name="bugs_requests"/>
 
