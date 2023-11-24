@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/joho/godotenv"
 	"github.com/zmb3/spotify"
@@ -19,7 +20,6 @@ import (
 /**
 TODO:
 - complete readme.md
-- move functions out
 */
 
 func main() {
@@ -46,6 +46,9 @@ func main() {
 		"https://open.spotify.com/playlist/6A38ofY5uoJpFLCwE2T8OC?si=7acb4e42de0b409a",
 	}
 
+	currentTime := time.Now()
+	currentTimeFormatted := strings.ReplaceAll(currentTime.Format("01-02-2006 15:04:05"), " ", "_")
+
 	var wg sync.WaitGroup
 
 	for _, element := range playlistUrls {
@@ -58,7 +61,7 @@ func main() {
 			defer wg.Done()
 			client := spotify.Authenticator{}.NewClient(accessToken)
 			playlist := spotifyclient.FetchSpotifyClient(accessToken, playlistId)
-			csvfiles.CreateCsv(client, accessToken, playlist)
+			csvfiles.CreateCsv(client, accessToken, playlist, currentTimeFormatted)
 		}()
 	}
 
@@ -70,67 +73,3 @@ func main() {
 	wg.Wait()
 	log.Printf("Completed converting %v playlists to .csv", len(playlistUrls))
 }
-
-// func createCsv(accessToken *oauth2.Token, playlist *spotify.FullPlaylist) {
-// 	tracks := playlist.Tracks.Tracks
-// 	var allTracks [][]string
-// 	titleRow := []string{
-// 		"Track",
-// 		"Artists",
-// 		"Album",
-// 		"Duration",
-// 	}
-
-// 	allTracks = append(allTracks, titleRow)
-
-// 	for _, element := range tracks {
-// 		var artists []string
-
-// 		for _, artist := range element.Track.Artists {
-// 			artists = append(artists, artist.Name)
-// 		}
-
-// 		trackName := element.Track.Name
-// 		artistsString := strings.Join(artists, ", ")
-// 		albumName := element.Track.Album.Name
-// 		trackDuration := element.Track.TimeDuration().String()
-
-// 		row := []string{
-// 			trackName,
-// 			artistsString,
-// 			albumName,
-// 			trackDuration,
-// 		}
-
-// 		allTracks = append(allTracks, row)
-// 	}
-
-// 	fileName := createCsvFileName(playlist)
-
-// 	file, err := os.Create(fileName)
-
-// 	if err != nil {
-// 		log.Fatalln("failed to open file", err)
-// 	}
-
-// 	defer file.Close()
-
-// 	wr := csv.NewWriter(file)
-// 	wr.WriteAll(allTracks)
-// }
-
-// func createCsvFileName(playlist *spotify.FullPlaylist) string {
-// 	playlistName := playlist.Name
-// 	playlistNameFormatted := strings.ReplaceAll(playlistName, " ", "_")
-
-// 	currentTime := time.Now()
-// 	currentTimeFormatted := strings.ReplaceAll(currentTime.Format("01-02-2006 15:04:05"), " ", "_")
-
-// 	if err := os.MkdirAll(fmt.Sprintf("./exports/%s/", currentTimeFormatted), os.ModePerm); err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	fileName := fmt.Sprintf("./exports/%s/%s.csv", currentTimeFormatted, playlistNameFormatted)
-
-// 	return fileName
-// }

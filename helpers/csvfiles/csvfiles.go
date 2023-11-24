@@ -6,30 +6,15 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/zmb3/spotify"
 	"golang.org/x/oauth2"
 )
 
-func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spotify.FullPlaylist) {
-	// var limit = 100
-	// var offset = 100
-
-	// playlistTracks, err := client.GetPlaylistTracksOpt(playlist.ID, &spotify.Options{
-	// 	Limit:  &limit,
-	// 	Offset: &offset,
-	// }, "limit,offset,tracks.items(track(name))")
-
-	// if err != nil {
-	// 	log.Fatalln("No playlist tracks", err)
-	// }
-
-	// tracks := playlist.Tracks.Tracks
-
+func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spotify.FullPlaylist, currentTimeFormatted string) {
 	tracks, err := client.GetPlaylistTracks(playlist.ID)
 
-	var playlistTracks []spotify.PlaylistTrack
+	playlistTracks := []spotify.PlaylistTrack{}
 
 	if err != nil {
 		log.Fatal(err)
@@ -48,8 +33,6 @@ func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spoti
 			log.Fatal(err)
 		}
 	}
-
-	fmt.Println(len(tracks.Tracks), len(playlistTracks))
 
 	var allTracks [][]string
 	titleRow := []string{
@@ -83,7 +66,7 @@ func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spoti
 		allTracks = append(allTracks, row)
 	}
 
-	fileName := createCsvFileName(playlist)
+	fileName := createCsvFileName(playlist, currentTimeFormatted)
 
 	file, err := os.Create(fileName)
 
@@ -97,14 +80,13 @@ func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spoti
 	wr.WriteAll(allTracks)
 }
 
-func createCsvFileName(playlist *spotify.FullPlaylist) string {
+func createCsvFileName(playlist *spotify.FullPlaylist, currentTimeFormatted string) string {
 	playlistName := playlist.Name
 	playlistNameFormatted := strings.ReplaceAll(playlistName, " ", "_")
 
-	currentTime := time.Now()
-	currentTimeFormatted := strings.ReplaceAll(currentTime.Format("01-02-2006 15:04:05"), " ", "_")
+	directory := fmt.Sprintf("./exports/%s/", currentTimeFormatted)
 
-	if err := os.MkdirAll(fmt.Sprintf("./exports/%s/", currentTimeFormatted), os.ModePerm); err != nil {
+	if err := os.MkdirAll(directory, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
 
