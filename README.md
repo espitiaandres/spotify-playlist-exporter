@@ -23,7 +23,7 @@ Below are the inputs/outputs to this script:
 
 - `playlistUrls`: A slice of strings. These strings are Spotify playlist urls.
 
-> Example: https://open.spotify.com/playlist/37i9dQZEVXbNG2KDcFcKOF?si=be29ccfd84a347b8
+> Example: If you wanted to choose `Spotify's Top Songs - Global` playlist, this would be the link you would enter in the playlistUrls variable: https://open.spotify.com/playlist/37i9dQZEVXbNG2KDcFcKOF?si=be29ccfd84a347b8
 
 <a name="outputs"/>
 
@@ -35,16 +35,9 @@ Below are the inputs/outputs to this script:
   - Album Name
   - Duration
 
-> Example:
+> Example: These are the songs on `Spotify's Top Songs - Global` playlist in the exported .csv file
 
-<h1 align="center">
-<img
-    src="/assets/example_csv_file.jpg"
-    alt="Example CSV file produced"
-    title="Example CSV file produced"
-    width="200"
-/>
-</h1>
+![Screenshot](./assets/example_csv_file.png)
 
 <a name="documentation"/>
 
