@@ -13,31 +13,43 @@ import (
 )
 
 func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spotify.FullPlaylist) {
-	var limit = 100
+	// var limit = 100
+	// var offset = 100
 
-	playlistTracks, err := client.GetPlaylistTracksOpt(playlist.ID, &spotify.Options{
-		Limit: &limit,
-	}, "limit")
+	// playlistTracks, err := client.GetPlaylistTracksOpt(playlist.ID, &spotify.Options{
+	// 	Limit:  &limit,
+	// 	Offset: &offset,
+	// }, "limit,offset,tracks.items(track(name))")
+
+	// if err != nil {
+	// 	log.Fatalln("No playlist tracks", err)
+	// }
+
+	// tracks := playlist.Tracks.Tracks
+
+	tracks, err := client.GetPlaylistTracks(playlist.ID)
+
+	var playlistTracks []spotify.PlaylistTrack
 
 	if err != nil {
-		log.Fatalln("No playlist tracks", err)
+		log.Fatal(err)
 	}
 
-	tracks := playlist.Tracks.Tracks
+	log.Printf("Playlist has %d total tracks", tracks.Total)
+	for page := 1; ; page++ {
+		playlistTracks = append(playlistTracks, tracks.Tracks...)
 
-	search, err := client.Search(playlist.Tracks.Next, spotify.SearchTypePlaylist)
+		err = client.NextPage(tracks)
 
-	if err != nil {
-		log.Fatalln("Fail to search", err)
+		if err == spotify.ErrNoMorePages {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
-	// TODO: loop here.
-	// If playlist.Tracks.next is not nil, keep adding them to the tracks array
-	// client.NextTrackResults(search)
-
-	// tracks = append(tracks, search.Tracks.Tracks)
-
-	fmt.Println(playlist.Name, playlist.Tracks.Total, playlistTracks.Limit, search.Tracks)
+	fmt.Println(len(tracks.Tracks), len(playlistTracks))
 
 	var allTracks [][]string
 	titleRow := []string{
@@ -49,7 +61,7 @@ func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spoti
 
 	allTracks = append(allTracks, titleRow)
 
-	for _, element := range tracks {
+	for _, element := range playlistTracks {
 		var artists []string
 
 		for _, artist := range element.Track.Artists {
