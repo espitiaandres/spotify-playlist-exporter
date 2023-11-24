@@ -45,6 +45,10 @@ Below are the inputs/outputs to this script:
 
 ![Screenshot](./assets/example_csv_file.png)
 
+This is the same file but in a more user friendly presentation:
+
+![Screenshot](./assets/example_csv_file_formatted.png)
+
 <a name="documentation"/>
 
 # Documentation
