@@ -21,6 +21,7 @@ func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spoti
 	}
 
 	log.Printf("Playlist has %d total tracks", tracks.Total)
+
 	for page := 1; ; page++ {
 		playlistTracks = append(playlistTracks, tracks.Tracks...)
 
@@ -29,6 +30,7 @@ func CreateCsv(client spotify.Client, accessToken *oauth2.Token, playlist *spoti
 		if err == spotify.ErrNoMorePages {
 			break
 		}
+
 		if err != nil {
 			log.Fatal(err)
 		}
